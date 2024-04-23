@@ -28,7 +28,7 @@ class FifoV1(ABCFifo):
         return self.items.pop()
 
     def is_empty(self):
-        return self.items is None
+        return self.items == []
 
 
 class FifoV2:
@@ -64,7 +64,7 @@ class FifoV2:
 
 
 def test_fifo(fifo: Union[FifoV1, FifoV2]):
-    print(fifo.is_empty() == True)
+    assert fifo.is_empty() == True
 
     start = time.time()
 
