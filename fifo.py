@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections import deque
 from typing import Union
 import time
 
@@ -31,7 +32,7 @@ class FifoV1(ABCFifo):
         return self.items == []
 
 
-class FifoV2:
+class FifoV2(ABCFifo):
     class Node:
         def __init__(self, value=None, next=None):
             self.value = value
@@ -63,6 +64,27 @@ class FifoV2:
         return self.head is None
 
 
+class FifoV3(ABCFifo):
+    def __init__(self):
+        self.queue = deque()
+
+    def push(self, value):
+        self.queue.append(value)
+
+    def pop(self):
+        if len(self.queue) == 0:
+            return None
+        return self.queue.popleft()
+
+    def peek(self):
+        if len(self.queue) == 0:
+            return None
+        return self.queue[0]
+
+    def is_empty(self):
+        return len(self.queue) == 0
+
+
 def test_fifo(fifo: Union[FifoV1, FifoV2]):
     assert fifo.is_empty() == True
 
@@ -78,3 +100,4 @@ def test_fifo(fifo: Union[FifoV1, FifoV2]):
 
 test_fifo(FifoV1())
 test_fifo(FifoV2())
+test_fifo(FifoV3())
